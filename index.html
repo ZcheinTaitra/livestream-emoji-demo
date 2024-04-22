@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Floating Emoji Reactions</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .emoji-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      height: 50vh;
+    }
+
+    .emoji-icon {
+      font-size: 24px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    .emoji {
+      font-size: 48px;
+      align-self: flex-end;
+      animation: xAxis 5s cubic-bezier(0.02, 0.01, 0.21, 1);
+    }
+
+    .emoji::after {
+      content: attr(data-emoji);
+      display: block;
+      width: 20px;
+      height: 20px;
+      animation: yAxis 3s cubic-bezier(0.3, 0.27, 0.07, 1);
+    }
+
+    @keyframes yAxis {
+      100% {
+        animation-timing-function: cubic-bezier(0.02, 0.01, 0.21, 1);
+        transform: translateY(-500px);
+        opacity: 0;
+      }
+    }
+
+    @keyframes xAxis {
+      100% {
+        animation-timing-function: cubic-bezier(0.3, 0.27, 0.07, 1);
+        transform: translateX(150px) rotate(30deg);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="emoji-container" id="floating-emojis"></div>
+  <div class="emoji-container" id="emoji-icons"></div>
+
+  <script>
+    // Add event listeners to emoji icons
+    document.addEventListener('DOMContentLoaded', function() {
+      const emojiContainer = document.getElementById('emoji-icons');
+      const emojis = ['❤️', '😂', '💯', '💤', '🎃', '👋']; // Add more emojis as needed
+
+      emojis.forEach(emoji => {
+        const emojiIcon = document.createElement('span');
+        emojiIcon.textContent = emoji;
+        emojiIcon.classList.add('emoji-icon');
+        emojiIcon.addEventListener('click', function() {
+          addEmoji(emoji);
+        });
+        emojiContainer.appendChild(emojiIcon);
+      });
+    });
+
+    function addEmoji(emoji) {
+      const emojiElement = document.createElement('div');
+      // emojiElement.textContent = emoji;
+      emojiElement.classList.add('emoji');
+      emojiElement.setAttribute('data-emoji', emoji); // Set emoji attribute
+      
+      document.getElementById('floating-emojis').appendChild(emojiElement);
+      
+      setTimeout(() => {
+        emojiElement.remove();
+      }, 5000); // Remove emoji after 5 seconds
+    }
+  </script>
+</body>
+</html>
